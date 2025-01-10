@@ -1,13 +1,28 @@
 from itertools import combinations
-from typing import Any, Iterable
+from typing import Any, Iterable, NamedTuple
 
 from pyproj import Geod
 from networkx import Graph
 from shapely import MultiPolygon, Point, LineString, Polygon
 from shapely.validation import explain_validity
 
+from models.routes import RouteFindDTO, RouteSendDTO
 from utils.buffer import buffer_geometry_in_metres
 from utils.route import find_fastest_route_in_graph
+
+
+def find_optimal_route_with_pydantic_model(data: RouteFindDTO) -> RouteSendDTO:
+    """
+    Функция для нахождения оптимального пути с помощью pydantic моделей
+    """
+
+    route_search_data = _process_data_to_find_route(data)
+
+    optimal_route = find_optimal_route(**route_search_data._asdict())
+
+    route_send_data = _process_data_to_send_route(optimal_route)
+
+    return route_send_data
 
 
 def find_optimal_route(
@@ -94,6 +109,43 @@ def find_optimal_route(
     optimal_route = find_fastest_route_in_graph(graph, start_point, finish_point, edge_weight)
 
     return optimal_route
+
+
+RouteSearch = NamedTuple(
+    "RouteSearch", 
+    [
+        ("start_point", Point),
+        ("finish_point", Point),
+        ("restricted_polygons", MultiPolygon | None),
+        ("buffer_distance", float | None)
+    ]
+)
+
+
+def _process_data_to_find_route(data: RouteFindDTO) -> RouteSearch:
+    """
+    Функция для передачи обработанных данных для последующего поиска маршрута
+    """
+
+    start_point = data.start_point.geometry.shape
+    finish_point = data.finish_point.geometry.shape
+
+    if data.restricted_polygons:
+        restricted_polygons = data.restricted_polygons.geometry.shape
+        buffer_distance = data.restricted_polygons.properties.get("buffer_distance")
+    else:
+        restricted_polygons = None
+        buffer_distance = None
+
+    return RouteSearch(start_point, finish_point, restricted_polygons, buffer_distance)
+
+
+def _process_data_to_send_route(data: LineString) -> RouteSendDTO:
+    """
+    Функция для передачи обработанных данных уже найденного оптимального маршрута
+    """
+
+    return RouteSendDTO.model_validate(data)
 
 
 def _make_multipolygon(geometry: Polygon | MultiPolygon) -> MultiPolygon:
