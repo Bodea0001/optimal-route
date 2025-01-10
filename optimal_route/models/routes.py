@@ -25,11 +25,12 @@ class RouteFindDTO(BaseModel):
         }
 
         for feature in feature_collection:
-            if feature.id == "start_point":
+            name = feature.properties.get("name")
+            if name == "start_point":
                 valid_dict["start_point"] = feature
-            elif feature.id == "finish_point":
+            elif name == "finish_point":
                 valid_dict["finish_point"] = feature
-            elif feature.id == "restricted_polygons":
+            elif name == "restricted_polygons":
                 valid_dict["restricted_polygons"] = feature
 
         if not valid_dict["start_point"] or not valid_dict["finish_point"]:
