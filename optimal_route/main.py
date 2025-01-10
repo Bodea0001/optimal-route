@@ -11,6 +11,19 @@ from utils.buffer import buffer_geometry_in_metres
 from utils.route import find_fastest_route_in_graph
 
 
+def find_optimal_route_with_geojson(geojson: str) -> str:
+    """
+    Функция для нахождения оптимального пути с помощью GeoJSON
+    """
+
+    route_data = _validate_route_geojson_to_data(geojson)
+
+    route_send_data = find_optimal_route_with_pydantic_model(route_data)
+    
+    geojson_to_send = _serialize_route_data_to_geojson(route_send_data)
+    return geojson_to_send
+
+
 def find_optimal_route_with_pydantic_model(data: RouteFindDTO) -> RouteSendDTO:
     """
     Функция для нахождения оптимального пути с помощью pydantic моделей
@@ -109,6 +122,22 @@ def find_optimal_route(
     optimal_route = find_fastest_route_in_graph(graph, start_point, finish_point, edge_weight)
 
     return optimal_route
+
+
+def _validate_route_geojson_to_data(geojson: str) -> RouteFindDTO:
+    """
+    Функция для получения данных для поиска маршрута из GeoJSON
+    """
+
+    return RouteFindDTO.model_validate_json(geojson)
+
+
+def _serialize_route_data_to_geojson(data: RouteSendDTO) -> str:
+    """
+    Функция для передачи обработанных данных уже найденного оптимального маршрута в GeoJSON
+    """
+
+    return data.model_dump_json()
 
 
 RouteSearch = NamedTuple(
