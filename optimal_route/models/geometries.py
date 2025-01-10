@@ -14,8 +14,8 @@ from shapely.geometry import (
 from shapely.geometry.base import BaseGeometry as ShapelyBaseGeomerty
 from pydantic import model_validator, field_validator, Field
 
-from models.geojsonbase import _GeoJsonBase
-from models.geotypes import (
+from optimal_route.models.geojsonbase import _GeoJsonBase
+from optimal_route.models.geotypes import (
     Position,    
     PolygonCoords,
     LineStringCoords,

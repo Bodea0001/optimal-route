@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import BaseModel, field_validator, model_serializer, SerializationInfo
 
-from models.geotypes import BBox
+from optimal_route.models.geotypes import BBox
 
 
 class _GeoJsonBase(BaseModel):

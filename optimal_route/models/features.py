@@ -2,8 +2,8 @@ from typing import Any, Literal, Iterator
 
 from pydantic import BaseModel, Field, StrictInt, StrictStr, field_validator
 
-from models.geometries import Geometry
-from models.geojsonbase import _GeoJsonBase
+from optimal_route.models.geometries import Geometry
+from optimal_route.models.geojsonbase import _GeoJsonBase
 
 
 class Feature[Props: dict[str, Any] | BaseModel, Geom: Geometry](_GeoJsonBase):

@@ -6,9 +6,9 @@ from networkx import Graph
 from shapely import MultiPolygon, Point, LineString, Polygon
 from shapely.validation import explain_validity
 
-from models.routes import RouteFindDTO, RouteSendDTO
-from utils.buffer import buffer_geometry_in_metres
-from utils.route import find_fastest_route_in_graph
+from optimal_route.models.routes import RouteFindDTO, RouteSendDTO
+from optimal_route.utils.buffer import buffer_geometry_in_metres
+from optimal_route.utils.route import find_fastest_route_in_graph
 
 
 def find_optimal_route_with_geojson(geojson: str) -> str:

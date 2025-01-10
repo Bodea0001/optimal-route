@@ -2,8 +2,8 @@ from typing import Any
 
 from pydantic import BaseModel, model_validator, ValidationError
 
-from models.features import Feature, FeatureCollection
-from models.geometries import Point, MultiPolygon, LineString
+from optimal_route.models.features import Feature, FeatureCollection
+from optimal_route.models.geometries import Point, MultiPolygon, LineString
 
 
 class RouteFindDTO(BaseModel):
