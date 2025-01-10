@@ -2,7 +2,7 @@ from main import find_optimal_route, find_optimal_route_with_pydantic_model, fin
 from models.routes import RouteFindDTO, RouteSendDTO
 
 
-all = [
+__all__ = [
     "find_optimal_route",
     "find_optimal_route_with_pydantic_model",
     "RouteFindDTO",
