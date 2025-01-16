@@ -130,3 +130,7 @@ optimal_route = find_optimal_route(start_point, finish_point, restricted_polygon
 print(optimal_route)
 # <LINESTRING (73.359 54.996, 74.84 54.065, 80.068 55.005, 81.599 55.069, 82.8...>
 ```
+
+## Свойства
+- `name` - наименование геометрического объекта
+- `buffer_distance` - расстояние в метрах, на которое будут расширены запретные зоны
